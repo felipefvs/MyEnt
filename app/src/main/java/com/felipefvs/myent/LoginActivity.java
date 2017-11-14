@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipefvs.myent.database.FirebaseInterface;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth = FirebaseInterface.getFirebaseAuth();
 
                 firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
