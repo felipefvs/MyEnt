@@ -1,5 +1,6 @@
 package com.felipefvs.myent;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,5 +61,41 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        EditText confirmPassword = findViewById(R.id.mConfirmPasswordEditText);
+
+        confirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if(!b){
+
+                    Drawable dw;
+
+                    if(!isPasswordConfirmed()) {
+                        dw = getResources().getDrawable(R.drawable.edittext_error_bg);
+                        Toast.makeText(getApplicationContext(), "As senhas não estão compatíveis", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        dw = getResources().getDrawable(R.drawable.edittextbackground);
+                    }
+
+                    view.setBackground(dw);
+
+                }
+
+
+            }
+        });
+
+    }
+
+    private boolean isPasswordConfirmed() {
+        EditText pwEt = findViewById(R.id.mPasswordEditText);
+        EditText pwCet = findViewById(R.id.mConfirmPasswordEditText);
+
+        String pw = pwEt.getText().toString();
+        String cPw =  pwCet.getText().toString();
+
+        return pw.equals(cPw);
     }
 }
