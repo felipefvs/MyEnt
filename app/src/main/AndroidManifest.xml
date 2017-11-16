@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".SignInActivity" android:theme="@style/LoginTheme"/>
         <activity android:name=".UserEntsActivity" />
         <activity android:name=".EntDetaisActivity"></activity>
     </application>

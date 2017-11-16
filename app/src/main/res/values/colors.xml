@@ -3,4 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="formTextColor">#FFFFFF</color>
+    <color name="formErrorColor">#EE831010</color>
+
+    <color name="c1_red">#DB0000</color>
+    <color name="c2_white">#FFFFFF</color>
+    <color name="c3_black">#000000</color>
+    <color name="c4_brown">#564D4D</color>
+    <color name="c5_darkRed">#831010</color>
+
+    <color name="c1_red_alpha">#EEDB0000</color>
+    <color name="c4_brown_alpha">#EE564D4D</color>
+    <color name="c5_darkRed_alpha">#EE831010</color>
+
+
 </resources>

@@ -4,42 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_background"
     tools:context="com.felipefvs.myent.SignInActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <EditText
-        android:id="@+id/mPasswordEditText"
-        android:layout_width="384dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mEmailEditText" />
+        android:background="@drawable/login_box_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/mEmailEditText"
-        android:layout_width="384dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textEmailAddress"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/mEmailEditText"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/form_height"
+            android:layout_margin="@dimen/form_edittext_margin"
+            android:background="@drawable/edittextbackground"
+            android:ems="10"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/form_edittext_padding"
+            android:textColor="@color/formTextColor"
+            android:textColorHint="@color/formTextColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mNameEditText" />
 
-    <Button
-        android:id="@+id/mSignInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Cadastrar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mPasswordEditText" />
+        <EditText
+            android:id="@+id/mPasswordEditText"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/form_height"
+            android:layout_margin="@dimen/form_edittext_margin"
+            android:background="@drawable/edittextbackground"
+            android:ems="10"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:padding="@dimen/form_edittext_padding"
+            android:textColor="@color/formTextColor"
+            android:textColorHint="@color/formTextColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mEmailEditText" />
+
+        <EditText
+            android:id="@+id/mConfirmPasswordEditText"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/form_height"
+            android:layout_margin="@dimen/form_edittext_margin"
+            android:background="@drawable/edittextbackground"
+            android:ems="10"
+            android:hint="Confirme a Senha"
+            android:inputType="textPassword"
+            android:padding="@dimen/form_edittext_padding"
+            android:textColor="@color/formTextColor"
+            android:textColorHint="@color/formTextColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mPasswordEditText" />
+
+        <EditText
+            android:id="@+id/mNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/form_height"
+            android:layout_margin="@dimen/form_edittext_margin"
+            android:background="@drawable/edittextbackground"
+            android:ems="10"
+            android:hint="Nome"
+            android:inputType="textPersonName"
+            android:padding="@dimen/form_edittext_padding"
+            android:textColor="@color/formTextColor"
+            android:textColorHint="@color/formTextColor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/mSignInButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/form_button_margin"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/buttonbackground"
+            android:padding="@dimen/form_button_padding"
+            android:text="Cadastrar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mConfirmPasswordEditText" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
