@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.felipefvs.myent.database.FirebaseInterface;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.mLogoutItem) {
+
+            FirebaseInterface.getFirebaseAuth().signOut();
+
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             this.startActivity(intent);
             return true;

@@ -28,6 +28,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        firebaseAuth = FirebaseInterface.getFirebaseAuth();
+
+        if(firebaseAuth.getCurrentUser() != null)
+        {
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+
         final EditText email = findViewById(R.id.mEmailEditText);
         final EditText password = findViewById(R.id.mPasswordEditText);
 
@@ -40,23 +48,31 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                firebaseAuth = FirebaseInterface.getFirebaseAuth();
+                try {
 
-                firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if( task.isSuccessful() ) {
+                    firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if( task.isSuccessful() ) {
 
-                                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(i);
+                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(i);
 
-                                    Toast.makeText(getApplicationContext(), "Logado com sucesso!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Erro no login!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Logado com sucesso!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Erro no login!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                 }
-                            }
-                        });
+                            });
+
+                } catch (java.lang.IllegalArgumentException e) {
+                    Toast.makeText(getApplicationContext(), "Erro no login: " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
 
 
