@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">My Entertainment</string>
+
+    <string name="name">Nome</string>
+    <string name="last_name">Sobrenome</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="confirm_password">Confirme a senha</string>
+
+    <string name="login_make">Logar</string>
+    <string name="sign_in_make">Cadastrar</string>
+    <string name="create_count">Não tem conta? Crie uma!</string>
+
 </resources>
