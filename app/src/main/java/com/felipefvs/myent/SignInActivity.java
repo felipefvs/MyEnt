@@ -1,5 +1,6 @@
 package com.felipefvs.myent;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.felipefvs.myent.database.FirebaseInterface;
+import com.felipefvs.myent.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -48,33 +50,19 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String msg=validade();
+                String msg = validade();
                 if(!msg.isEmpty()) {
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                firebaseAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
-                        .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                User newUser = new User(mName.getText().toString(), mLastName.getText().toString(),
+                        mEmail.getText().toString(), mPassword.getText().toString());
 
-                                if( task.isSuccessful() ) {
+                createUser(newUser);
 
-                                    String userId = firebaseAuth.getCurrentUser().getUid();
-
-                                    DatabaseReference users = firebaseReference.child("users").child(userId);
-                                    users.child("name").setValue(mName.getText().toString());
-                                    users.child("lastname").setValue(mLastName.getText().toString());
-                                    users.child("email").setValue(mEmail.getText().toString());
-
-                                    Toast.makeText(getApplicationContext(), "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Erro no cadastrado!", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+                Intent i = new Intent(SignInActivity.this, MainActivity.class);
+                startActivity(i);
 
             }
         });
@@ -123,5 +111,35 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         return "";
+    }
+
+    private void createUser(final User user) {
+
+        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if( task.isSuccessful() ) {
+
+                        user.setPassword("");
+
+                    String userId = firebaseAuth.getCurrentUser().getUid();
+
+                    DatabaseReference users = firebaseReference.child("users").child(userId);
+                    users.child("name").setValue(user.getName());
+                    users.child("lastname").setValue(user.getLastName());
+                    users.child("email").setValue(user.getEmail());
+
+                    Toast.makeText(getApplicationContext(), "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Erro no cadastrado!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+
     }
 }
