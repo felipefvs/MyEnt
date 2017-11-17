@@ -21,25 +21,40 @@ public class SignInActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference firebaseReference;
 
+    EditText mName;
+    EditText mLastName;
+    EditText mEmail;
+    EditText mPassword;
+    EditText mConfirPassword;
+    Button mSignInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        Button signIn = findViewById(R.id.mSignInButton);
-
-        final EditText email = findViewById(R.id.mEmailEditText);
-        final EditText password = findViewById(R.id.mPasswordEditText);
+        mName = findViewById(R.id.mNameEditText);
+        mLastName = findViewById(R.id.mLastNameEditText);
+        mEmail = findViewById(R.id.mEmailEditText);
+        mPassword = findViewById(R.id.mPasswordEditText);
+        mConfirPassword = findViewById(R.id.mConfirmPasswordEditText);
+        mSignInButton = findViewById(R.id.mSignInButton);
 
         firebaseAuth = FirebaseInterface.getFirebaseAuth();
         firebaseReference = FirebaseInterface.getFirebase();
 
 
-        signIn.setOnClickListener(new View.OnClickListener() {
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                String msg=validade();
+                if(!msg.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                firebaseAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                         .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -48,7 +63,10 @@ public class SignInActivity extends AppCompatActivity {
 
                                     String userId = firebaseAuth.getCurrentUser().getUid();
 
-                                    firebaseReference.child("users").child(userId).child("email").setValue(email.getText().toString());
+                                    DatabaseReference users = firebaseReference.child("users").child(userId);
+                                    users.child("name").setValue(mName.getText().toString());
+                                    users.child("lastname").setValue(mLastName.getText().toString());
+                                    users.child("email").setValue(mEmail.getText().toString());
 
                                     Toast.makeText(getApplicationContext(), "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -90,12 +108,20 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordConfirmed() {
-        EditText pwEt = findViewById(R.id.mPasswordEditText);
-        EditText pwCet = findViewById(R.id.mConfirmPasswordEditText);
-
-        String pw = pwEt.getText().toString();
-        String cPw =  pwCet.getText().toString();
+        String pw = mPassword.getText().toString();
+        String cPw = mConfirPassword.getText().toString();
 
         return pw.equals(cPw);
+    }
+
+    private String validade() {
+        if(mName.getText().toString().isEmpty() ||
+                mPassword.getText().toString().isEmpty() ||
+                mEmail.getText().toString().isEmpty() ||
+                !isPasswordConfirmed()) {
+            return "Existem campos inválidos";
+        }
+
+        return "";
     }
 }
