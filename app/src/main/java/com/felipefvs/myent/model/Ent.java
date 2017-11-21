@@ -6,13 +6,23 @@ package com.felipefvs.myent.model;
 
 public class Ent {
 
+    int    mId;
     String mName;
 
     public Ent() {
     }
 
-    public Ent(String name) {
+    public Ent(int id, String name) {
+        this.mId = mId;
         this.mName = name;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        this.mId = id;
     }
 
     public String getName() {

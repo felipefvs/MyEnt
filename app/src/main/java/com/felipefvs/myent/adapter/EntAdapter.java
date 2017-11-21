@@ -33,6 +33,10 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
         this.mEntList = entList;
     }
 
+    public void setEnts(List<Ent> ents) {
+        this.mEntList = ents;
+    }
+
     @Override
     public EntViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

@@ -2,6 +2,8 @@ package com.felipefvs.myent;
 
 
 import android.content.Intent;
+import android.graphics.Movie;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,12 +14,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.felipefvs.myent.adapter.EntAdapter;
 import com.felipefvs.myent.database.FirebaseInterface;
 import com.felipefvs.myent.model.Ent;
+import com.felipefvs.myent.network.JSONUtilities;
+import com.felipefvs.myent.network.TheMovieDBInterface;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,59 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
 
-        prepareData();
-    }
-
-    private void prepareData() {
-        Ent movie = new Ent("Mad Max: Fury Road");
-        mEntList.add(movie);
-
-        movie = new Ent("Inside Out");
-        mEntList.add(movie);
-
-        movie = new Ent("Star Wars: Episode VII - The Force Awakens");
-        mEntList.add(movie);
-
-        movie = new Ent("Shaun the Sheep");
-        mEntList.add(movie);
-
-        movie = new Ent("The Martian");
-        mEntList.add(movie);
-
-        movie = new Ent("Mission: Impossible Rogue Nation");
-        mEntList.add(movie);
-
-        movie = new Ent("Up");
-        mEntList.add(movie);
-
-        movie = new Ent("Star Trek");
-        mEntList.add(movie);
-
-        movie = new Ent("The LEGO Movie");
-        mEntList.add(movie);
-
-        movie = new Ent("Iron Man");
-        mEntList.add(movie);
-
-        movie = new Ent("Aliens");
-        mEntList.add(movie);
-
-        movie = new Ent("Chicken Run");
-        mEntList.add(movie);
-
-        movie = new Ent("Back to the Future");
-        mEntList.add(movie);
-
-        movie = new Ent("Raiders of the Lost Ark");
-        mEntList.add(movie);
-
-        movie = new Ent("Goldfinger");
-        mEntList.add(movie);
-
-        movie = new Ent("Guardians of the Galaxy");
-        mEntList.add(movie);
-
-        mAdapter.notifyDataSetChanged();
+        new FetchEntDataTask().execute("/top_rated");
     }
 
     @Override
@@ -122,6 +77,56 @@ public class MainActivity extends AppCompatActivity {
 
         /*switch (item.getItemId()) {
             case R.id.mLogoutItem:*/
+    }
+
+    private class FetchEntDataTask extends AsyncTask<String, Void, Ent[]>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Ent[] doInBackground(String... params) {
+
+            Ent[] parsedData = new ArrayList<Ent>().toArray(new Ent[0]);
+
+            /* If there's no url, there's nothing to look up. */
+            if (params.length == 0) {
+                return null;
+            }
+
+            String endPoint = params[0];
+            URL requestUrl = TheMovieDBInterface.buildUrl(endPoint);
+
+            try
+            {
+                String jsonWeatherResponse = TheMovieDBInterface
+                        .getResponseFromHttpUrl(requestUrl);
+
+                return JSONUtilities.getEntDataFromJson(jsonWeatherResponse);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Ent[] ents) {
+            super.onPostExecute(ents);
+
+            if ((ents != null) && (ents.length >= 0))
+            {
+                //showMoviePostersView();
+                mAdapter.setEnts(Arrays.asList(ents));
+                mRecyclerView.setAdapter(mAdapter);
+            }
+            //else
+              //  showErrorMessage();
+        }
     }
 }
 
