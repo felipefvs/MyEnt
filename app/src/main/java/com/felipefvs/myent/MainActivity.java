@@ -1,22 +1,23 @@
 package com.felipefvs.myent;
 
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.felipefvs.myent.adapter.EntAdapter;
+import com.felipefvs.myent.adapter.EntAdapter.ItemClickListener;
 import com.felipefvs.myent.database.FirebaseInterface;
 import com.felipefvs.myent.model.Ent;
 import com.felipefvs.myent.network.JSONUtilities;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private List<Ent> mEntList = new ArrayList<>();
     private RecyclerView mRecyclerView;
@@ -48,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+
+
+            }
+        });
 
         new FetchEntDataTask().execute("/top_rated");
     }

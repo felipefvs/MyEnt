@@ -19,13 +19,25 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
 
     private List<Ent> mEntList;
 
-    public class EntViewHolder extends RecyclerView.ViewHolder {
+    private static ItemClickListener itemClickListener;
+
+    public class EntViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView title;
 
         public EntViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.mEntNameTextView);
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if(itemClickListener != null) {
+                itemClickListener.onItemClick(getAdapterPosition());
+            }
         }
     }
 
@@ -59,5 +71,13 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
         return mEntList.size();
     }
 
+    public interface ItemClickListener {
+
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
 
 }

@@ -10,19 +10,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseInterface {
 
+    private static FirebaseDatabase firebase;
     private static DatabaseReference reference;
     private static FirebaseAuth auth;
 
     public static DatabaseReference getFirebase(){
 
+        firebaseInit();
+
         if( reference == null ){
-            reference = FirebaseDatabase.getInstance().getReference();
+            reference = firebase.getReference();
+            firebase.setPersistenceEnabled(true);
         }
 
         return reference;
     }
 
     public static FirebaseAuth getFirebaseAuth(){
+
         if( auth == null ){
             auth = FirebaseAuth.getInstance();
         }
@@ -31,6 +36,12 @@ public class FirebaseInterface {
 
     public static boolean isConnected() {
         return auth.getCurrentUser() != null;
+    }
+
+    private static void firebaseInit() {
+
+        if(firebase == null)
+            firebase = FirebaseDatabase.getInstance();
     }
 
 }

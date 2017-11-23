@@ -56,7 +56,7 @@ public class JSONUtilities
             int id;
             String title;
             //String posterPath;
-            //String synopsis;
+            String synopsis;
             //int rating;
             //String releaseDate;
 
@@ -66,12 +66,12 @@ public class JSONUtilities
             id = popularMovie.getInt(MOVIE_ID);
             title = popularMovie.getString(MOVIE_TITLE);
             //posterPath = popularMovie.getString(MOVIE_POSTER);
-            //synopsis = popularMovie.getString(MOVIE_SYNOPSIS);
+            synopsis = popularMovie.getString(MOVIE_SYNOPSIS);
             //rating = popularMovie.getInt(MOVIE_RATING);
             //releaseDate = popularMovie.getString(MOVIE_DATE);
 
             //parsedMoviesData[i] = new Ent(id, title, posterPath, synopsis, rating, releaseDate);
-            parsedMoviesData[i] = new Ent(id, title);
+            parsedMoviesData[i] = new Ent(id, title, synopsis);
         }
 
         return parsedMoviesData;
