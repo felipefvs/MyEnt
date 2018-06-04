@@ -20,7 +20,7 @@ public class FirebaseInterface {
 
         if( reference == null ){
             reference = firebase.getReference();
-            firebase.setPersistenceEnabled(true);
+            //firebase.setPersistenceEnabled(true);
         }
 
         return reference;
@@ -40,8 +40,11 @@ public class FirebaseInterface {
 
     private static void firebaseInit() {
 
-        if(firebase == null)
+        if(firebase == null) {
             firebase = FirebaseDatabase.getInstance();
+            firebase.setPersistenceEnabled(true);
+        }
+
     }
 
 }
