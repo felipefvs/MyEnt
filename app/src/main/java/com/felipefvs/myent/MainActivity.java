@@ -1,10 +1,7 @@
 package com.felipefvs.myent;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,9 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.felipefvs.myent.adapter.EntAdapter;
-import com.felipefvs.myent.adapter.EntAdapter.ItemClickListener;
+
 import com.felipefvs.myent.database.FirebaseInterface;
 import com.felipefvs.myent.model.Ent;
 import com.felipefvs.myent.network.JSONUtilities;
@@ -29,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements EntAdapter.OnItemClickListener {
 
     private List<Ent> mEntList = new ArrayList<>();
     private RecyclerView mRecyclerView;
@@ -43,21 +42,13 @@ public class MainActivity extends AppCompatActivity{
         mRecyclerView = findViewById(R.id.mListRecyclerView);
 
         mAdapter = new EntAdapter(mEntList);
+        mAdapter.setOnItemClickListener(this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
-
-        mAdapter.setOnItemClickListener(new ItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-
-
-
-            }
-        });
 
         new FetchEntDataTask().execute("/top_rated");
     }
@@ -87,6 +78,13 @@ public class MainActivity extends AppCompatActivity{
 
         /*switch (item.getItemId()) {
             case R.id.mLogoutItem:*/
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        ImageView imgView = (ImageView)v.findViewById(R.id.mImageButton);
+
+        imgView.setImageResource(R.drawable.ic_star_filled);
     }
 
     private class FetchEntDataTask extends AsyncTask<String, Void, Ent[]>
