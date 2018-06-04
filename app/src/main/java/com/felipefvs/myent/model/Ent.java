@@ -17,7 +17,7 @@ public class Ent  implements Parcelable {
     }
 
     public Ent(int id, String name, String synopsis) {
-        this.mId = mId;
+        this.mId = id;
         this.mName = name;
         this.mSynopsis = synopsis;
     }

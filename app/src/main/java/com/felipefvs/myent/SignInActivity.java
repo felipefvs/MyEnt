@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
+
 public class SignInActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
@@ -56,10 +58,12 @@ public class SignInActivity extends AppCompatActivity {
                     return;
                 }
 
-                User newUser = new User(mName.getText().toString(), mLastName.getText().toString(),
-                        mEmail.getText().toString(), mPassword.getText().toString());
+                HashMap<String, String> favorites = new HashMap<String, String>();
 
-                createUser(newUser);
+                User newUser = new User(mName.getText().toString(), mLastName.getText().toString(),
+                        mEmail.getText().toString(), favorites);
+
+                createUser(newUser, mPassword.getText().toString());
 
                 Intent i = new Intent(SignInActivity.this, MainActivity.class);
                 startActivity(i);
@@ -116,9 +120,9 @@ public class SignInActivity extends AppCompatActivity {
         return "";
     }
 
-    private void createUser(final User user) {
+    private void createUser(final User user, final String password) {
 
-        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), password)
                 .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
 
             @Override
@@ -126,14 +130,13 @@ public class SignInActivity extends AppCompatActivity {
 
                     if( task.isSuccessful() ) {
 
-                        user.setPassword("");
-
                     String userId = firebaseAuth.getCurrentUser().getUid();
 
                     DatabaseReference users = firebaseReference.child("users").child(userId);
                     users.child("name").setValue(user.getName());
                     users.child("lastname").setValue(user.getLastName());
                     users.child("email").setValue(user.getEmail());
+                    users.child("favorites").setValue(user.getFavorites());
 
                     Toast.makeText(getApplicationContext(), "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                 } else {

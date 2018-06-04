@@ -86,6 +86,7 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
 
         Ent ent = mEntList.get(position);
         holder.title.setText(ent.getName());
+        holder.imgView.setTag(ent.getId());
 
     }
 

@@ -19,8 +19,11 @@ import com.felipefvs.myent.adapter.EntAdapter;
 
 import com.felipefvs.myent.database.FirebaseInterface;
 import com.felipefvs.myent.model.Ent;
+import com.felipefvs.myent.model.User;
 import com.felipefvs.myent.network.JSONUtilities;
 import com.felipefvs.myent.network.TheMovieDBInterface;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -85,6 +88,15 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
         ImageView imgView = (ImageView)v.findViewById(R.id.mImageButton);
 
         imgView.setImageResource(R.drawable.ic_star_filled);
+
+        FirebaseUser currUser = FirebaseInterface.getFirebaseAuth().getCurrentUser();
+        String userId = currUser.getUid();
+
+        DatabaseReference ref = FirebaseInterface.getFirebase().child("users").child(userId).child("favorites");
+
+        int entId = (int) imgView.getTag();
+
+        ref.push().setValue(entId);
     }
 
     private class FetchEntDataTask extends AsyncTask<String, Void, Ent[]>
