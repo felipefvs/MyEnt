@@ -132,11 +132,7 @@ public class SignInActivity extends AppCompatActivity {
 
                     String userId = firebaseAuth.getCurrentUser().getUid();
 
-                    DatabaseReference users = firebaseReference.child("users").child(userId);
-                    users.child("name").setValue(user.getName());
-                    users.child("lastname").setValue(user.getLastName());
-                    users.child("email").setValue(user.getEmail());
-                    users.child("favorites").setValue(user.getFavorites());
+                    firebaseReference.child("users").child(userId).setValue(user);
 
                     Toast.makeText(getApplicationContext(), "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                 } else {

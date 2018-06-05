@@ -23,11 +23,15 @@ import com.felipefvs.myent.model.User;
 import com.felipefvs.myent.network.JSONUtilities;
 import com.felipefvs.myent.network.TheMovieDBInterface;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
     private List<Ent> mEntList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private EntAdapter mAdapter;
+
+    private List<User> mUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,38 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
         mRecyclerView.setAdapter(mAdapter);
 
         new FetchEntDataTask().execute("/top_rated");
+
+        mUserList = new ArrayList<>();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currUser = FirebaseInterface.getFirebaseAuth().getCurrentUser();
+        String userId = currUser.getUid();
+
+        DatabaseReference usersRef = FirebaseInterface.getFirebase().child("users");
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                mUserList.clear();
+                for(DataSnapshot u : dataSnapshot.getChildren()) {
+                    User user = u.getValue(User.class);
+
+                    mUserList.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -92,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
         FirebaseUser currUser = FirebaseInterface.getFirebaseAuth().getCurrentUser();
         String userId = currUser.getUid();
 
-        DatabaseReference ref = FirebaseInterface.getFirebase().child("users").child(userId).child("favorites");
-
-        int entId = (int) imgView.getTag();
-
-        ref.push().setValue(entId);
     }
 
     private class FetchEntDataTask extends AsyncTask<String, Void, Ent[]>
