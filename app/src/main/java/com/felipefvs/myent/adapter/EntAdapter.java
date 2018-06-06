@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.felipefvs.myent.R;
 import com.felipefvs.myent.model.Ent;
+import com.felipefvs.myent.model.Favorite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ import java.util.List;
 public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
 
     private List<Ent> mEntList;
+    private List<Favorite> mUserFavorites;
 
     /* Callback for list item click events */
     public interface OnItemClickListener {
@@ -64,8 +67,9 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
         mOnItemClickListener = listener;
     }
 
-    public EntAdapter(List<Ent> entList) {
-        this.mEntList = entList;
+    public EntAdapter(List<Favorite> userFavorites) {
+        this.mUserFavorites = userFavorites;
+        this.mEntList = new ArrayList<>();
     }
 
     public void setEnts(List<Ent> ents) {
@@ -85,8 +89,20 @@ public class EntAdapter extends RecyclerView.Adapter<EntAdapter.EntViewHolder>{
     public void onBindViewHolder(EntViewHolder holder, int position) {
 
         Ent ent = mEntList.get(position);
+        int entId = ent.getId();
+        String entName = ent.getName();
         holder.title.setText(ent.getName());
         holder.imgView.setTag(ent.getId());
+
+        for(Favorite f : mUserFavorites) {
+            if(f.getEntId() == entId) {
+                holder.imgView.setImageResource(R.drawable.ic_star_filled);
+                break;
+            }
+
+        }
+
+
 
     }
 

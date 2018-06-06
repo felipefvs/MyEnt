@@ -49,19 +49,6 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = findViewById(R.id.mListRecyclerView);
-
-        mAdapter = new EntAdapter(mEntList);
-        mAdapter.setOnItemClickListener(this);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
-
-        new FetchEntDataTask().execute("/top_rated");
-
         mUserList = new ArrayList<>();
         mUserFavorites = new ArrayList<>();
 
@@ -111,6 +98,19 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
 
             }
         });
+
+        mRecyclerView = findViewById(R.id.mListRecyclerView);
+
+        mAdapter = new EntAdapter(mUserFavorites);
+        mAdapter.setOnItemClickListener(this);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mRecyclerView.setAdapter(mAdapter);
+
+        new FetchEntDataTask().execute("/top_rated");
     }
 
     @Override
