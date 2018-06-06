@@ -123,11 +123,19 @@ public class MainActivity extends AppCompatActivity implements EntAdapter.OnItem
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.mLogoutItem) {
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.mLogoutItem) {
 
             FirebaseInterface.getFirebaseAuth().signOut();
 
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            this.startActivity(intent);
+            return true;
+
+        } else if(itemId == R.id.mFavoritesItem) {
+
+            Intent intent = new Intent(MainActivity.this, UserEntsActivity.class);
             this.startActivity(intent);
             return true;
 
