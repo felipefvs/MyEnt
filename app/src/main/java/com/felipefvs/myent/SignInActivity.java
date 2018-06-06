@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.felipefvs.myent.database.FirebaseInterface;
+import com.felipefvs.myent.model.Favorite;
 import com.felipefvs.myent.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SignInActivity extends AppCompatActivity {
@@ -58,10 +60,11 @@ public class SignInActivity extends AppCompatActivity {
                     return;
                 }
 
-                HashMap<String, String> favorites = new HashMap<String, String>();
-
-                User newUser = new User(mName.getText().toString(), mLastName.getText().toString(),
-                        mEmail.getText().toString(), favorites);
+                User newUser = new User();
+                newUser.setName(mName.getText().toString());
+                newUser.setLastname(mLastName.getText().toString());
+                newUser.setEmail(mEmail.getText().toString());
+                newUser.setFavorites(new ArrayList<Favorite>());
 
                 createUser(newUser, mPassword.getText().toString());
 

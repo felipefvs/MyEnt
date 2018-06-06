@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by FELIPESIQUEIRAB20588 on 17/11/2017.
@@ -21,16 +22,9 @@ public class User {
     String name;
     String lastname;
     String email;
-    HashMap<String, String> favorites;
+    List<Favorite> favorites;
 
     public User() {
-    }
-
-    public User(String name, String lastname, String email, HashMap<String, String> favorites) {
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.favorites = favorites;
     }
 
     public String getName() {
@@ -57,11 +51,11 @@ public class User {
         this.email = email;
     }
 
-    public HashMap<String, String> getFavorites() {
+    public List<Favorite> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(HashMap<String, String> favorites) {
+    public void setFavorites(List<Favorite> favorites) {
         this.favorites = favorites;
     }
 }
